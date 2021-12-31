@@ -60,7 +60,13 @@ Programming: An Introduction to Computer Science" by John Zelle,
 published by Franklin, Beedle & Associates.  Also see
 http://mcsp.wartburg.edu/zelle/python for a quick reference"""
 
-__version__ = "5.0"
+__version__ = "5.ab"
+
+# Version 5.ab 12/20/2021
+#     * updated the initialization of the master variable inside GraphWin
+#     * updated GraphWin's close function so it checks if the root window,
+#       created by the library, is closed if all of it's children are closed.
+#       This keeps the process from running in the background.
 
 # Version 5 8/26/2016
 #     * update at bottom to fix MacOS issue causing askopenfile() to hang
@@ -187,6 +193,7 @@ _root.withdraw()
 
 _update_lasttime = time.time()
 
+
 def update(rate=None):
     global _update_lasttime
     if rate:
@@ -210,13 +217,13 @@ class GraphWin(tk.Canvas):
     def __init__(self, title="Graphics Window",
                  width=200, height=200, autoflush=True):
         assert type(title) == type(""), "Title must be a string"
-        master = tk.Toplevel(_root)
-        master.protocol("WM_DELETE_WINDOW", self.close)
-        tk.Canvas.__init__(self, master, width=width, height=height,
-                           highlightthickness=0, bd=0)
+        self.master = tk.Toplevel(_root)
         self.master.title(title)
+        self.master.protocol("WM_DELETE_WINDOW", self.close)
+        tk.Canvas.__init__(self, self.master, width=width, height=height,
+                           highlightthickness=0, bd=0)
         self.pack()
-        master.resizable(0,0)
+        self.master.resizable(0,0)
         self.foreground = "black"
         self.items = []
         self.mouseX = None
@@ -229,7 +236,7 @@ class GraphWin(tk.Canvas):
         self._mouseCallback = None
         self.trans = None
         self.closed = False
-        master.lift()
+        self.master.lift()
         self.lastKey = ""
         if autoflush: _root.update()
 
@@ -271,6 +278,10 @@ class GraphWin(tk.Canvas):
         self.closed = True
         self.master.destroy()
         self.__autoflush()
+        #Checks to see if _root has any other children.
+        #If it has no children then it destroys root.
+        if not _root.winfo_children():
+            _root.destroy()
 
 
     def isClosed(self):
