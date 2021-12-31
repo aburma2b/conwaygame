@@ -224,11 +224,11 @@ class Board(object):
         Takes in a list of (x, y) tuples representing block coordinates,
         and activates the blocks corresponding to those coordinates.
         '''
-
-        #### YOUR CODE HERE #####
-        raise Exception("seed not implemented")
+        #### Ankush Burman Code #####
+        for pos in block_coords:
+            temp = self.block_list[pos]
+            temp.set_live(self.canvas)
     
-
 
     def get_block_neighbors(self, block):
         '''
@@ -279,11 +279,11 @@ if __name__ == '__main__':
     board = Board(win, BOARD_WIDTH, BOARD_HEIGHT)
 
     ## PART 1: Make sure that the board __init__ method works    
-    board.random_seed(.15)
+    #board.random_seed(.15)
 
     ## PART 2: Make sure board.seed works. Comment random_seed above and uncomment
     ##  one of the seed methods below
-    # board.seed(toad_blocklist)
+    board.seed(toad_blocklist)
 
     ## PART 3: Test that neighbors work by commenting the above and uncommenting
     ## the following two lines:
