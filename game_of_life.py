@@ -226,8 +226,8 @@ class Board(object):
         '''
         #### Ankush Burman Code #####
         for pos in block_coords:
-            temp = self.block_list[pos]
-            temp.set_live(self.canvas)
+            block = self.block_list[pos]
+            block.set_live(self.canvas)
     
 
     def get_block_neighbors(self, block):
@@ -235,10 +235,21 @@ class Board(object):
         Given a Block object, returns a list of neighboring blocks.
         Should not return itself in the list.
         '''
-        #### YOUR CODE HERE #####
-        #### Think about edge conditions!
-        raise Exception("get_block_neighbors not implemented")
-       
+        #### Ankush Burman Code #####
+        neighbor_list = []
+        pos_x, pos_y = int(block.x), int(block.y) 
+        start_x = int(pos_x-1)
+        start_y = int(pos_y-1)
+        for x in range(start_x, start_x+3):
+            for y in range(start_y, start_y+3):
+                if x == pos_x and y == pos_y:
+                    continue 
+                elif 0 <= x < self.width and 0 <= y < self.height:
+                    block = self.block_list[(x, y)]
+                    neighbor_list.append(block)
+                
+        return neighbor_list 
+
 
     def simulate(self):
         '''
@@ -283,12 +294,12 @@ if __name__ == '__main__':
 
     ## PART 2: Make sure board.seed works. Comment random_seed above and uncomment
     ##  one of the seed methods below
-    board.seed(toad_blocklist)
+    #board.seed(toad_blocklist)
 
     ## PART 3: Test that neighbors work by commenting the above and uncommenting
     ## the following two lines:
-    # board.seed(neighbor_test_blocklist)
-    # test_neighbors(board)
+    board.seed(neighbor_test_blocklist)
+    test_neighbors(board)
 
 
     ## PART 4: Test that simulate() works by uncommenting the next two lines:
