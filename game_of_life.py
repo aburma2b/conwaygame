@@ -13,10 +13,13 @@ import random
 # GLOBAL VARIABLES
 ############################################################
     
-BLOCK_SIZE = 40
+#BLOCK_SIZE = 40
+BLOCK_SIZE = 25
 BLOCK_OUTLINE_WIDTH = 2
-BOARD_WIDTH = 12
-BOARD_HEIGHT = 12
+#BOARD_WIDTH = 12
+BOARD_WIDTH = 30
+#BOARD_HEIGHT = 12
+BOARD_HEIGHT = 30
 
 neighbor_test_blocklist = [(0,0), (1,1)]
 toad_blocklist = [(4,4), (3,5), (3,6), (5,7), (6,5), (6,6)]
@@ -147,7 +150,7 @@ class Block(gr.Rectangle):
 # BOARD CLASS (Read through and understand this part!)
 # Print out and turn in this section.
 # Name: Ankush Burman
-# Recitation: ???? 
+# Recitation: Self-Study 
 ###########################################################
 
 class Board(object):
@@ -185,13 +188,13 @@ class Board(object):
         # (x,y):Block will be useful here.
         self.block_list = {}
 
-        ####### Ankush Burman Code ######
+        #### Ankush Burman Code ####
         for x in range(self.width):
              for y in range(self.height):
                  pos = gr.Point(x, y)
-                 color = "red"
+                 color = "plum"
                  self.block_list[(x,y)] = Block(pos, color)
-
+        #### Ankush Burman Code ####
 
     def draw_gridline(self, startp, endp):
         ''' Parameters: startp - a Point of where to start the gridline
@@ -232,6 +235,7 @@ class Board(object):
             block.set_live(self.canvas)
     
         return None
+        #### Ankush Burman Code ####
 
     def get_block_neighbors(self, block):
         '''
@@ -253,6 +257,7 @@ class Board(object):
                     neighbor_list.append(block)
                 
         return neighbor_list 
+        #### Ankush Burman Code ####
 
     #### Ankush Burman Code ####
     def get_live_neighbors(self, neighbor_list):
@@ -266,7 +271,8 @@ class Board(object):
                 live_neighbors += 1
 
         return live_neighbors 
-   
+    #### Ankush Burman Code ####
+
     #### Ankush Burman Code ####
     def calculate_new_status(self):
         '''
@@ -289,6 +295,7 @@ class Board(object):
                 continue 
         
         return None
+    #### Ankush Burman Code ####
 
     def simulate(self):
         '''
@@ -312,8 +319,8 @@ class Board(object):
             block.reset_status(self.canvas)
 
         return None 
+        #### Ankush Burman Code ####
 
-        
     def animate(self):
         '''
         Animates the Game of Life, calling "simulate"
@@ -347,12 +354,14 @@ if __name__ == '__main__':
 
 
     ## PART 4: Test that simulate() works by uncommenting the next two lines:
-    board.seed(toad_blocklist)
-    board.canvas.after(2000, board.simulate)
+    #board.seed(toad_blocklist)
+    #board.canvas.after(2000, board.simulate)
 
     ## PART 5: Try animating! Comment out win.after(2000, board.simulate) above, and
     ## uncomment win.after below.
-    # win.after(2000, board.animate)
+    #board.seed(diehard_blocklist)
+    board.random_seed(0.25)
+    board.canvas.after(500, board.animate) 
 
     ## Yay, you're done! Try seeding with different blocklists (a few are provided at the top of this file!)
     
