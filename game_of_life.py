@@ -1,6 +1,6 @@
 # Name: Ankush Burman   
 # Section: Self
-# Date: Started: Dec 29, 2021; Finished: 
+# Date: Started: Dec 29, 2021; Finished: Dec 31, 2021 
 # game_of_life.py
 
 import graphics5ab as gr 
