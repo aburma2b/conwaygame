@@ -237,9 +237,10 @@ class Board(object):
         '''
         #### Ankush Burman Code #####
         neighbor_list = []
-        pos_x, pos_y = int(block.x), int(block.y) 
-        start_x = int(pos_x-1)
-        start_y = int(pos_y-1)
+        pos_x, pos_y = block.get_coords()
+        pos_x, pos_y = int(pos_x), int(pos_y)
+        start_x = pos_x-1
+        start_y = pos_y-1
         for x in range(start_x, start_x+3):
             for y in range(start_y, start_y+3):
                 if x == pos_x and y == pos_y:
@@ -249,6 +250,19 @@ class Board(object):
                     neighbor_list.append(block)
                 
         return neighbor_list 
+
+    #### Ankush Burman Code ####
+    def get_live_neighbors(self, neighbor_list):
+        '''
+        Given a list of neighbors, returns the number of live
+        neighbors.
+        '''
+        live_neighbors = 0
+        for block in neighbors_list:
+            if block.self.status == "live":
+                live_neighbors += 1
+
+        return live_neighbors 
 
 
     def simulate(self):
@@ -265,7 +279,8 @@ class Board(object):
            to call reset_status(self.canvas) on each block.
         '''
 
-        #### YOUR CODE HERE #####
+        #### Ankush Burman Code #####
+        
         raise Exception("simulate not implemented")
 
         
