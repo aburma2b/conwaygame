@@ -206,7 +206,7 @@ class Board(object):
         line = gr.Line(gr.Point(startp.x*BLOCK_SIZE-1, startp.y*BLOCK_SIZE-1), \
                     gr.Point(endp.x*BLOCK_SIZE-1, endp.y*BLOCK_SIZE-1))
         line.draw(self.canvas)
-
+        return None 
 
     def random_seed(self, percentage):
         ''' Parameters: percentage - a number between 0 and 1 representing the
@@ -217,6 +217,8 @@ class Board(object):
         for block in self.block_list.values():
             if random.random() < percentage:
                 block.set_live(self.canvas)
+
+        return None
 
     def seed(self, block_coords):
         '''
@@ -229,6 +231,7 @@ class Board(object):
             block = self.block_list[pos]
             block.set_live(self.canvas)
     
+        return None
 
     def get_block_neighbors(self, block):
         '''
@@ -258,12 +261,34 @@ class Board(object):
         neighbors.
         '''
         live_neighbors = 0
-        for block in neighbors_list:
-            if block.self.status == "live":
+        for block in neighbor_list:
+            if block.is_live():
                 live_neighbors += 1
 
         return live_neighbors 
+   
+    #### Ankush Burman Code ####
+    def calculate_new_status(self):
+        '''
+        Goes through every block on the board and determins it's 
+        next status by looking at the block's neighbors. 
+        1. Any live cell with fewer than two live neighbours dies. 
+        2. Any live cell with more than three live neighbours dies. 
+        3. Any live cell with exactly two or three live neighbours lives on. 
+        4. Any dead cell with exactly three live neighbours becomes a live cell.
+        '''
+        for block in self.block_list.values():
+            neighbor_list = self.get_block_neighbors(block)
+            live_neighbors = self.get_live_neighbors(neighbor_list)
 
+            if live_neighbors < 2 or live_neighbors > 3:
+                block.new_status = "dead"
+            elif live_neighbors == 3 and not block.is_live():
+                block.new_status = "live"
+            else:
+                continue 
+        
+        return None
 
     def simulate(self):
         '''
@@ -280,19 +305,23 @@ class Board(object):
         '''
 
         #### Ankush Burman Code #####
-        
-        raise Exception("simulate not implemented")
+        #Calculates new status of the blocks.
+        self.calculate_new_status()
+        #Sets the new status of all blocks as current status
+        for block in self.block_list.values():
+            block.reset_status(self.canvas)
+
+        return None 
 
         
-
     def animate(self):
         '''
         Animates the Game of Life, calling "simulate"
         once every second
         '''
         self.simulate()
-        self.win.after(self.delay, self.animate)
-
+        self.canvas.after(self.delay, self.animate)
+        return None 
 
 
 ################################################################
@@ -313,13 +342,13 @@ if __name__ == '__main__':
 
     ## PART 3: Test that neighbors work by commenting the above and uncommenting
     ## the following two lines:
-    board.seed(neighbor_test_blocklist)
-    test_neighbors(board)
+    #board.seed(neighbor_test_blocklist)
+    #test_neighbors(board)
 
 
     ## PART 4: Test that simulate() works by uncommenting the next two lines:
-    # board.seed(toad_blocklist)
-    # win.after(2000, board.simulate)
+    board.seed(toad_blocklist)
+    board.canvas.after(2000, board.simulate)
 
     ## PART 5: Try animating! Comment out win.after(2000, board.simulate) above, and
     ## uncomment win.after below.
